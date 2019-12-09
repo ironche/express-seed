@@ -1,13 +1,15 @@
 import { exec } from 'child_process';
 
-export function shell(cmd) {
+export function shell(cmd, outputAsArray) {
   return new Promise((resolve, reject) => {
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
-        reject(err);
+        reject({ err, stderr });
         return;
       }
-      resolve({ stdout, stderr });
+      resolve(
+        outputAsArray ? stdout.split('\n') : stdout
+      );
     });
   });
 }
