@@ -4,12 +4,15 @@ export function shell(cmd, outputAsArray) {
   return new Promise((resolve, reject) => {
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
-        reject({ err, stderr });
+        reject(err);
         return;
       }
-      resolve(
-        outputAsArray ? stdout.split('\n') : stdout
-      );
+      const res = outputAsArray ? stdout.split('\n') : stdout;
+
+      resolve({
+        stderr,
+        stdout: res,
+      });
     });
   });
 }
